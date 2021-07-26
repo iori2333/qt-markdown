@@ -21,9 +21,9 @@ private:
   static std::unordered_map<ElemEnv, std::regex> env_regs;
 
   std::string text;
-  std::vector<std::string_view> lines;
+  std::vector<std::string> lines;
 
-  auto inline_scan(std::string_view line, ElemEnv env) const
+  auto inline_scan(const std::string& line, ElemEnv env) const
       -> std::vector<Element>;
   auto line_scan() const -> std::vector<Element>;
 };

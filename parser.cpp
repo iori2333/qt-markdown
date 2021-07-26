@@ -37,19 +37,18 @@ auto Parser::parse() const -> std::vector<Element> {
  * @param line the line to be processed
  * @return list of tokens
  */
-auto Parser::inline_scan(std::string_view line, ElemEnv env) const
+auto Parser::inline_scan(const std::string& line, ElemEnv env) const
     -> std::vector<Element> {
   auto i = 0, n = static_cast<int>(line.size());
   auto res = std::vector<Element>{};
-  const auto s = std::string(line); // regex_match does not support string_view
-  auto tmp = std::string{};         // for regular texts
+  auto tmp = std::string{}; // for regular texts
 
   while (i < n) {
     auto flag = false;
 
     for (auto&& [reg, type] : inline_regs) {
       std::smatch match;
-      if (std::regex_search(s.begin() + i, s.end(), match, reg,
+      if (std::regex_search(line.begin() + i, line.end(), match, reg,
                             std::regex_constants::match_continuous)) {
         flag = true;
         if (!tmp.empty()) {
@@ -63,7 +62,7 @@ auto Parser::inline_scan(std::string_view line, ElemEnv env) const
     }
 
     if (!flag) {
-      tmp.push_back(s[i]);
+      tmp.push_back(line[i]);
       i++;
     }
   }
