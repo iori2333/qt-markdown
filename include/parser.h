@@ -12,14 +12,13 @@
 
 class Parser {
 public:
-  Parser();
+  Parser() = default;
+  ~Parser() = default;
+
   auto set(std::string_view text) -> void;
   auto parse() const -> std::vector<Element>;
 
 private:
-  static std::unordered_map<ElemType, std::regex> type_regs;
-  static std::unordered_map<ElemEnv, std::regex> env_regs;
-
   std::string text;
   std::vector<std::string> lines;
 

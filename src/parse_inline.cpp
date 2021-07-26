@@ -1,11 +1,4 @@
-#include "parser.h"
-#include <iostream>
-
-Parser::Parser() {}
-
-std::unordered_map<ElemType, std::regex> Parser::type_regs{
-    {ElemType::NORMAL, std::regex(R"(.*?)")},
-};
+#include <parser.h>
 
 auto inline_regs = std::vector<std::pair<std::regex, ElemType>>{
     {std::regex(R"(\*\*(.*?)\*\*)"), ElemType::BOLD},
@@ -16,20 +9,6 @@ auto inline_regs = std::vector<std::pair<std::regex, ElemType>>{
     {std::regex(R"(!(\[.*?\]\(.*?\)))"), ElemType::PICTURE},
     {std::regex(R"((\[.*?\]\(.*?\)))"), ElemType::LINK},
 };
-
-auto Parser::set(std::string_view text) -> void {
-  this->text = text;
-  this->lines = utils::split(text, "\n");
-}
-
-auto Parser::parse() const -> std::vector<Element> {
-  auto line_elements = std::vector<std::vector<Element>>{};
-  // Scan for each line and parse
-  for (auto&& line : lines) {
-    line_elements.push_back(inline_scan(line, ElemEnv::NORMAL));
-  }
-  return {};
-}
 
 /**
  * @brief Parser::first_scan scans for inline tokens and convert to a list of
