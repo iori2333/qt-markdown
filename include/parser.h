@@ -24,7 +24,8 @@ private:
 
   auto inline_scan(const std::string& line, ElemEnv env) const
       -> std::vector<Element>;
-  auto line_scan() const -> std::vector<Element>;
+  auto line_scan(const std::string& line) const -> ElemEnv;
+  auto crossline_scan() const -> void;
 };
 
 #endif // PARSER_H

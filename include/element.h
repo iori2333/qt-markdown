@@ -4,13 +4,10 @@
 #include <string>
 
 enum class ElemType {
-  NORMAL = 0,   // regular text
-  OLIST,        // ordered list
-  ULIST,        // unordered list
-  TITLE,        // title
-  PICTURE,      // picture
-  LINK,         // link
-  REFER_INLINE, // inline reference
+  NORMAL = 0,   // regular texts
+  PICTURE,      // pictures
+  LINK,         // links
+  REFER_INLINE, // inline references
   MATH_INLINE,  // inline LaTeX
   MATH,         // multi-line LaTeX
   BOLD,         // bold texts
@@ -21,6 +18,9 @@ enum class ElemEnv {
   NORMAL = 0, // regular environment
   REFER,      // reference environment
   CODE,       // code environment
+  TITLE,      // titles
+  OLIST,      // ordered lists
+  ULIST,      // unordered lists
 };
 
 struct Element {

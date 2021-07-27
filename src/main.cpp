@@ -11,6 +11,6 @@
 
 auto main(int argc, char** argv) -> int {
   auto parser = Parser();
-  parser.set("![114514](www.tiansuo.com)**a**$$x+1$$*a+aaa*");
+  parser.set("# abc\n## fff\n### ll");
   auto p = parser.parse();
 }

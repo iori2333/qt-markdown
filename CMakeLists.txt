@@ -21,7 +21,8 @@ set(PROJECT_SOURCES
         src/mainwindow.ui
         include/element.h
         include/utils.h src/utils.cpp
-        include/parser.h src/parser.cpp src/parse_inline.cpp
+        include/parser.h src/parser.cpp
+        src/parse_inline.cpp src/parse_line.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
