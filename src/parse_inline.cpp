@@ -1,3 +1,6 @@
+#include <regex>
+#include <unordered_map>
+
 #include <parser.h>
 
 auto inline_regs = std::vector<std::pair<std::regex, ElemType>>{

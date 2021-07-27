@@ -1,11 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <string>
-#include <algorithm>
-#include <regex>
-#include <unordered_map>
-
 #include <interface.h>
 #include <utils.h>
 

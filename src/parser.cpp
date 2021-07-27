@@ -1,5 +1,4 @@
 #include <parser.h>
-#include <iostream>
 
 using ElemLines = std::vector<std::vector<Element>>;
 

@@ -1,7 +1,9 @@
-#include <translator.h>
-#include <utils.h>
 #include <iostream>
 #include <fstream>
+#include <format>
+
+#include <translator.h>
+#include <utils.h>
 
 auto Translator::translate(const std::vector<std::vector<Element>> lines) const
     -> std::string {

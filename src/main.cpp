@@ -32,6 +32,6 @@ auto main(int argc, char** argv) -> int {
       "2. `Java`\n"
       "3. `Python`" // EOF
   );
-  auto p = parser->parse();
-  translator->translate(p);
+  auto parsed = parser->parse();
+  translator->translate(parsed);
 }
