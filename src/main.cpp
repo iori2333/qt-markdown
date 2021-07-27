@@ -14,7 +14,24 @@ auto main(int argc, char** argv) -> int {
   auto parser = std::shared_ptr<IParser>(new Parser());
   auto translator = std::shared_ptr<ITranslator>(new Translator());
 
-  parser->set("# Title\n> author: `Iori`\nlink: [github](github.com)\n## Title 2\nabaaba\n");
+  parser->set( // Begin
+      "# C\n"
+      "> author: `Iori`\nlink: [github](github.com)\n"
+      "## code\nabaaba\n"
+      "+ as we can write in a editor\n"
+      "+ write code\n"
+      "   + deploy\n"
+      "```\n"
+      "#include <stdio.h>\n"
+      "int main() {\n"
+      "printf(\"Hello, world\\n\");"
+      "}\n"
+      "```\n"
+      "This is a simple C program\n"
+      "1. `C`\n"
+      "2. `Java`\n"
+      "3. `Python`" // EOF
+  );
   auto p = parser->parse();
   translator->translate(p);
 }

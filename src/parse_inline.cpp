@@ -10,12 +10,6 @@ auto inline_regs = std::vector<std::pair<std::regex, ElemType>>{
     {std::regex(R"((\[.*?\]\(.*?\)))"), ElemType::LINK},
 };
 
-/**
- * @brief Parser::first_scan scans for inline tokens and convert to a list of
- * elements
- * @param line the line to be processed
- * @return list of tokens
- */
 auto Parser::inline_scan(const std::string& line, ElemEnv env) const
     -> std::vector<Element> {
   auto i = 0, n = static_cast<int>(line.size());
