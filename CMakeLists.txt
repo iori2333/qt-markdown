@@ -8,7 +8,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
@@ -19,9 +19,11 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         include/mainwindow.h
         src/mainwindow.ui
+        include/interface.h
         include/element.h
         include/utils.h src/utils.cpp
         include/parser.h src/parser.cpp
+        include/translator.h src/translator.cpp
         src/parse_inline.cpp src/parse_line.cpp
 )
 

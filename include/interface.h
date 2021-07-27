@@ -20,7 +20,7 @@ public:
   virtual auto translate(const std::vector<std::vector<Element>> lines) const
       -> std::string = 0;
 
-  virtual auto save(std::string_view path) const -> void = 0;
+  virtual auto save(const std::string& path) const -> bool = 0;
 };
 
 #endif // INTERFACE_H

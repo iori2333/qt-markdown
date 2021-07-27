@@ -47,7 +47,7 @@ auto Parser::inline_scan(const std::string& line, ElemEnv env) const
   }
 
   if (!tmp.empty()) {
-    res.push_back(Element{tmp, ElemEnv::NORMAL, ElemType::NORMAL});
+    res.push_back(Element{tmp, env, ElemType::NORMAL});
   }
   return res;
 }

@@ -1,5 +1,6 @@
 // #include "mainwindow.h"
 #include <parser.h>
+#include <translator.h>
 // #include <QApplication>
 
 // int main(int argc, char* argv[]) {
@@ -10,9 +11,10 @@
 //}
 
 auto main(int argc, char** argv) -> int {
-  auto parser = std::shared_ptr<IParser>();
-  parser.reset(new Parser());
+  auto parser = std::shared_ptr<IParser>(new Parser());
+  auto translator = std::shared_ptr<ITranslator>(new Translator());
 
-  parser->set("```\n# 123\n```\n\n# `123`");
+  parser->set("# Title\n> author: `Iori`\nlink: [github](github.com)\n## Title 2\nabaaba\n");
   auto p = parser->parse();
+  translator->translate(p);
 }

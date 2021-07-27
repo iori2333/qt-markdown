@@ -5,7 +5,7 @@ using ElemLines = std::vector<std::vector<Element>>;
 
 auto Parser::set(std::string_view text) -> void {
   this->text = text;
-  this->lines = utils::split(text, "\n");
+  this->lines = split(text, "\n");
 }
 
 auto Parser::parse() const -> ElemLines {

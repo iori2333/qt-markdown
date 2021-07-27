@@ -1,6 +1,6 @@
 #include <utils.h>
 
-auto utils::split(std::string_view s, std::string_view delims)
+auto split(std::string_view s, std::string_view delims)
     -> std::vector<std::string> {
   auto out = std::vector<std::string>{};
   auto pos = 0llu;
@@ -17,4 +17,23 @@ auto utils::split(std::string_view s, std::string_view delims)
     pos = next + 1;
   }
   return out;
+}
+
+static const char* elem_types[] = {
+    "NORMAL",      "PICTURES", "LINK", "REFER_INLINE",
+    "MATH_INLINE", "MATH",     "BOLD", "ITALIC",
+};
+
+static const char* elem_envs[] = {
+    "NORMAL", "REFER", "REFER_CROSS", "CODE", "TITLE", "OLIST", "ULIST",
+};
+
+std::ostream& operator<<(std::ostream& os, const ElemType type) {
+  os << elem_types[static_cast<int>(type)];
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const ElemEnv env) {
+  os << elem_envs[static_cast<int>(env)];
+  return os;
 }

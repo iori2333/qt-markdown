@@ -4,10 +4,14 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
+#include <element.h>
 
-namespace utils {
+std::ostream& operator<<(std::ostream& os, const ElemType type);
+
+std::ostream& operator<<(std::ostream& os, const ElemEnv env);
+
 auto split(std::string_view s, std::string_view delims = "\n")
     -> std::vector<std::string>;
-} // namespace utils
 
 #endif // UTILS_H
