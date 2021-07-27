@@ -15,12 +15,13 @@ enum class ElemType {
 };
 
 enum class ElemEnv {
-  NORMAL = 0, // regular environment
-  REFER,      // reference environment
-  CODE,       // code environment
-  TITLE,      // titles
-  OLIST,      // ordered lists
-  ULIST,      // unordered lists
+  NORMAL = 0,  // regular environment
+  REFER,       // reference environment
+  REFER_CROSS, // cross reference (self-made)
+  CODE,        // code environment
+  TITLE,       // titles
+  OLIST,       // ordered lists
+  ULIST,       // unordered lists
 };
 
 struct Element {

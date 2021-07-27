@@ -4,6 +4,9 @@ auto line_regs = std::vector<std::pair<std::regex, ElemEnv>>{
     {std::regex(R"(#+ +.+)"), ElemEnv::TITLE},
     {std::regex(R"( *\d+\. +.+)"), ElemEnv::OLIST},
     {std::regex(R"( *[+|-] +.+)"), ElemEnv::ULIST},
+    {std::regex(R"(```.*)"), ElemEnv::CODE},
+    {std::regex(R"(> .+)"), ElemEnv::REFER},
+    {std::regex(R"(>>>.*)"), ElemEnv::REFER_CROSS},
 };
 
 /**

@@ -3,29 +3,27 @@
 
 #include <string>
 #include <algorithm>
-#include <vector>
 #include <regex>
 #include <unordered_map>
 
-#include <element.h>
+#include <interface.h>
 #include <utils.h>
 
-class Parser {
+class Parser : public IParser {
 public:
   Parser() = default;
   ~Parser() = default;
 
-  auto set(std::string_view text) -> void;
-  auto parse() const -> std::vector<Element>;
+  auto set(std::string_view text) -> void override;
+  auto parse() const -> std::vector<std::vector<Element>> override;
 
 private:
   std::string text;
   std::vector<std::string> lines;
 
+  auto line_scan(const std::string& line) const -> ElemEnv;
   auto inline_scan(const std::string& line, ElemEnv env) const
       -> std::vector<Element>;
-  auto line_scan(const std::string& line) const -> ElemEnv;
-  auto crossline_scan() const -> void;
 };
 
 #endif // PARSER_H
