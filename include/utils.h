@@ -7,9 +7,9 @@
 #include <iostream>
 #include <element.h>
 
-std::ostream& operator<<(std::ostream& os, const ElemType type);
+auto operator<<(std::ostream& os, const ElemType type) -> std::ostream&;
 
-std::ostream& operator<<(std::ostream& os, const ElemEnv env);
+auto operator<<(std::ostream& os, const ElemEnv env) -> std::ostream&;
 
 auto split(std::string_view s, std::string_view delims = "\n")
     -> std::vector<std::string>;

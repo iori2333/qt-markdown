@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include <mainwindow.h>
+#include "../forms/ui_mainwindow.h"
 #include <page.h>
 #include <QWebChannel>
 

@@ -5,12 +5,12 @@
 class Page : public QWebEnginePage {
   Q_OBJECT
 public:
-  explicit Page(QObject* parent = nullptr) : QWebEnginePage(parent) {}
+  explicit Page(QObject* parent = nullptr);
   ~Page() = default;
 
 protected:
-  bool acceptNavigationRequest(const QUrl& url, NavigationType type,
-                               bool isMainFrame);
+  auto acceptNavigationRequest(const QUrl& url, NavigationType type,
+                               bool isMainFrame) -> bool;
 };
 
 #endif // PAGE_H

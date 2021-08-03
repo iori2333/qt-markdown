@@ -18,7 +18,7 @@ set(PROJECT_SOURCES
         src/main.cpp
         src/mainwindow.cpp
         include/mainwindow.h
-        src/mainwindow.ui
+        forms/mainwindow.ui
         include/interface.h
         include/element.h
         include/utils.h src/utils.cpp
@@ -48,6 +48,7 @@ else()
 endif()
 
 target_include_directories(qt-markdown PUBLIC include/)
+target_include_directories(qt-markdown PUBLIC forms/)
 
 target_link_libraries(qt-markdown PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(qt-markdown PRIVATE Qt${QT_VERSION_MAJOR}::WebEngineWidgets)

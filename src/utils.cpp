@@ -28,12 +28,12 @@ static const char* elem_envs[] = {
     "NORMAL", "REFER", "REFER_CROSS", "CODE", "TITLE", "OLIST", "ULIST",
 };
 
-std::ostream& operator<<(std::ostream& os, const ElemType type) {
+auto operator<<(std::ostream& os, const ElemType type) -> std::ostream& {
   os << elem_types[static_cast<int>(type)];
   return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const ElemEnv env) {
+auto operator<<(std::ostream& os, const ElemEnv env) -> std::ostream& {
   os << elem_envs[static_cast<int>(env)];
   return os;
 }
