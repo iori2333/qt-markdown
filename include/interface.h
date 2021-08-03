@@ -17,7 +17,7 @@ class ITranslator {
 public:
   virtual ~ITranslator() = default;
 
-  virtual auto translate(const std::vector<std::vector<Element>> lines) const
+  virtual auto translate(const std::vector<std::vector<Element>>& lines)
       -> std::string = 0;
 
   virtual auto save(const std::string& path) const -> bool = 0;

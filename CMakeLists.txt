@@ -11,8 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets WebEngineWidgets WebChannel REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets WebEngineWidgets WebChannel REQUIRED)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -25,6 +25,9 @@ set(PROJECT_SOURCES
         include/parser.h src/parser.cpp
         include/translator.h src/translator.cpp
         src/parse_inline.cpp src/parse_line.cpp
+        include/page.h src/page.cpp
+        include/document.h src/document.cpp
+        resources/markdown.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -47,6 +50,7 @@ endif()
 target_include_directories(qt-markdown PUBLIC include/)
 
 target_link_libraries(qt-markdown PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(qt-markdown PRIVATE Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
 
 set_target_properties(qt-markdown PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

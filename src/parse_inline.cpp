@@ -11,6 +11,7 @@ auto inline_regs = std::vector<std::pair<std::regex, ElemType>>{
     {std::regex(R"(\$\$(.*?)\$\$)"), ElemType::MATH},
     {std::regex(R"(!(\[.*?\]\(.*?\)))"), ElemType::PICTURE},
     {std::regex(R"((\[.*?\]\(.*?\)))"), ElemType::LINK},
+    {std::regex(R"((#+ +))"), ElemType::NORMAL},
 };
 
 auto Parser::inline_scan(const std::string& line, ElemEnv env) const
