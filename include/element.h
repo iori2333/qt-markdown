@@ -2,6 +2,7 @@
 #define ELEMENT_H
 
 #include <string>
+#include <vector>
 
 enum class ElemType {
   NORMAL = 0,   // regular texts
@@ -29,5 +30,8 @@ struct Element {
   ElemEnv env;
   ElemType type;
 };
+
+using ElemLine = std::vector<Element>;
+using ElemLines = std::vector<ElemLine>;
 
 #endif // ELEMENT_H

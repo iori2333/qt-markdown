@@ -1,9 +1,9 @@
-#include <mainwindow.h>
-#include "../forms/ui_mainwindow.h"
 #include <QWebChannel>
 #include <QFileDialog>
 #include <QMessageBox>
 
+#include <mainwindow.h>
+#include "../forms/ui_mainwindow.h"
 #include <page.h>
 
 MainWindow::MainWindow(QWidget* parent)
@@ -34,7 +34,6 @@ auto MainWindow::is_modified() const -> bool {
 }
 
 auto MainWindow::save(const QString& path) -> void {
-  // translator->save(path.toStdString());
   auto file = QFile(path);
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
     QMessageBox::warning(this, windowTitle(), "Couldn't write file.");
@@ -84,8 +83,7 @@ void MainWindow::on_actionAbout_triggered() {
 void MainWindow::on_actionAbout_Qt_triggered() { QMessageBox::aboutQt(this); }
 
 void MainWindow::on_editor_textChanged() {
-  auto text = ui->editor->toPlainText().toStdString();
-  parser->set(text);
+  parser->set(ui->editor->toPlainText().toStdString());
   auto out = translator->translate(parser->parse());
   content.setText(QString::fromStdString(out));
 }

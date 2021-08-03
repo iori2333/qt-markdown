@@ -2,7 +2,6 @@
 #define INTERFACE_H
 
 #include <element.h>
-#include <vector>
 
 class IParser {
 public:

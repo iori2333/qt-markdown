@@ -7,8 +7,6 @@
 #include <translator.h>
 #include <utils.h>
 
-using ElemLine = std::vector<Element>;
-using ElemLines = std::vector<ElemLine>;
 using EscapePair = std::pair<std::string_view, std::string_view>;
 
 auto inline_tags = std::unordered_map<ElemType, std::string_view>{

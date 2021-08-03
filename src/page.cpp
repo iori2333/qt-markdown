@@ -1,5 +1,6 @@
-#include <page.h>
 #include <QDesktopServices>
+
+#include <page.h>
 
 Page::Page(QObject* parent) : QWebEnginePage(parent) {}
 

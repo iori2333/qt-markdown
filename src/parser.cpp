@@ -1,7 +1,5 @@
 #include <parser.h>
 
-using ElemLines = std::vector<std::vector<Element>>;
-
 auto Parser::set(std::string_view text) -> void {
   this->text = text;
   this->lines = split(text, "\n");
