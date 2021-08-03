@@ -19,7 +19,6 @@ auto inline_tags = std::unordered_map<ElemType, std::string_view>{
     {ElemType::MATH, "<span class=\"italic-text\">{}</span>"},
     {ElemType::LINK, "<a href=\"{}\">{}</a>"},
     {ElemType::PICTURE, "<img src=\"{}\", alt=\"{}\">"},
-    {ElemType::NORMAL, "{}"},
 };
 
 auto env_tags = std::unordered_map<ElemEnv, std::string_view>{
@@ -36,6 +35,7 @@ auto escapes = std::vector<EscapePair>{
     {"&", "&amp;"},
     {"<", "&lt;"},
     {">", "&gt;"},
+    {" ", "&nbsp;"},
 };
 
 auto pic_reg = std::regex(R"(!\[(.*?)\]\((.*?)\))");

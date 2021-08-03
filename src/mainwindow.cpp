@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget* parent)
   page->setWebChannel(channel);
 
   ui->viewer->setUrl(QUrl("qrc:/index.html"));
-  setWindowTitle("Qt Markdown");
+  setWindowTitle("Ipora");
   setWindowIcon(QIcon(":app.ico"));
 }
 
@@ -77,7 +77,7 @@ void MainWindow::on_actionClose_triggered() {
 }
 
 void MainWindow::on_actionAbout_triggered() {
-  QMessageBox::about(this, "About qt-markdown",
+  QMessageBox::about(this, "About Ipora",
                      "A simple markdown editor made by Iori.");
 }
 
