@@ -46,7 +46,7 @@ auto MainWindow::save(const QString& path) -> void {
   ui->editor->document()->setModified(false);
 }
 
-void MainWindow::on_actionSave_triggered() {
+auto MainWindow::on_actionSave_triggered() -> void {
   if (!is_modified()) {
     return;
   }
@@ -87,6 +87,5 @@ void MainWindow::on_editor_textChanged() {
   auto text = ui->editor->toPlainText().toStdString();
   parser->set(text);
   auto out = translator->translate(parser->parse());
-
   content.setText(QString::fromStdString(out));
 }

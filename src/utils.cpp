@@ -19,6 +19,19 @@ auto split(std::string_view s, std::string_view delims)
   return out;
 }
 
+auto replace_string(std::string& s, std::string_view from, std::string_view to)
+    -> void {
+  auto pos = 0llu;
+  while (pos < s.size()) {
+    pos = s.find(from, pos);
+    if (pos == std::string::npos) {
+      break;
+    }
+    s.replace(pos, from.size(), to);
+    pos += to.size();
+  }
+}
+
 static const char* elem_types[] = {
     "NORMAL",      "PICTURES", "LINK", "REFER_INLINE",
     "MATH_INLINE", "MATH",     "BOLD", "ITALIC",

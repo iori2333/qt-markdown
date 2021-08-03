@@ -9,6 +9,7 @@
 
 using ElemLine = std::vector<Element>;
 using ElemLines = std::vector<ElemLine>;
+using EscapePair = std::pair<std::string_view, std::string_view>;
 
 auto inline_tags = std::unordered_map<ElemType, std::string_view>{
     {ElemType::BOLD, "<span class=\"bold-text\">{}</span>"},
@@ -31,11 +32,65 @@ auto env_tags = std::unordered_map<ElemEnv, std::string_view>{
     {ElemEnv::TITLE, "<h{0}>{1}</h{0}>"},
 };
 
+auto escapes = std::vector<EscapePair>{
+    {"&", "&amp;"},
+    {"<", "&lt;"},
+    {">", "&gt;"},
+};
+
 auto pic_reg = std::regex(R"(!\[(.*?)\]\((.*?)\))");
 auto link_reg = std::regex(R"(\[(.*?)\]\((.*?)\))");
 
+static auto escape(const std::string& s) -> std::string {
+  auto res = std::string(s);
+  for (auto&& [from, to] : escapes) {
+    replace_string(res, from, to);
+  }
+  return res;
+}
+
+auto Translator::translate_element(const Element& element) const
+    -> std::string {
+  auto content = escape(element.content);
+  switch (element.type) {
+  case ElemType::NORMAL:
+    return content;
+    break;
+  case ElemType::PICTURE: {
+    auto match = std::smatch{};
+    std::regex_match(content, match, pic_reg);
+    return std::format(inline_tags[ElemType::PICTURE], match[1].str(),
+                       match[2].str());
+    break;
+  }
+  case ElemType::LINK: {
+    auto match = std::smatch{};
+    std::regex_match(content, match, link_reg);
+    return std::format(inline_tags[ElemType::LINK], match[2].str(),
+                       match[1].str());
+    break;
+  }
+  default:
+    return std::format(inline_tags[element.type], content);
+  }
+  throw std::runtime_error("shouldn't reach here");
+}
+
+auto Translator::translate_line(const ElemLine& line, bool ignore_first) const
+    -> std::string {
+  auto ret = std::string{};
+  for (auto&& element : line) {
+    if (ignore_first) {
+      ignore_first = false;
+      continue;
+    }
+    ret += translate_element(element);
+  }
+
+  return ret;
+}
+
 auto Translator::translate(const ElemLines& lines) -> std::string {
-  //  print_struct(lines);
   auto length = lines.size();
   auto res = std::string{};
 
@@ -72,44 +127,8 @@ auto Translator::translate(const ElemLines& lines) -> std::string {
       res += std::format(env_tags[env], translate_line(lines[i])) + "<br/>\n";
     }
   }
-
+  last_result = res;
   return res;
-}
-
-auto Translator::translate_element(const Element& element) const
-    -> std::string {
-  switch (element.type) {
-  case ElemType::NORMAL:
-    return element.content;
-  case ElemType::PICTURE: {
-    auto match = std::smatch{};
-    std::regex_match(element.content, match, pic_reg);
-    return std::format(inline_tags[ElemType::PICTURE], match[1].str(),
-                       match[2].str());
-  }
-  case ElemType::LINK: {
-    auto match = std::smatch{};
-    std::regex_match(element.content, match, link_reg);
-    return std::format(inline_tags[ElemType::LINK], match[2].str(),
-                       match[1].str());
-  }
-  default:
-    return std::format(inline_tags[element.type], element.content);
-  }
-  throw std::runtime_error("should not reach here");
-}
-
-auto Translator::translate_line(const ElemLine& line, bool ignore_first) const
-    -> std::string {
-  auto ret = std::string{};
-  for (auto&& element : line) {
-    if (ignore_first) {
-      ignore_first = false;
-      continue;
-    }
-    ret += translate_element(element);
-  }
-  return ret;
 }
 
 auto Translator::save(const std::string& path) const -> bool {
