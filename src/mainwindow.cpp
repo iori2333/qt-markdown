@@ -1,7 +1,10 @@
 #include <mainwindow.h>
 #include "../forms/ui_mainwindow.h"
-#include <page.h>
 #include <QWebChannel>
+#include <QFileDialog>
+#include <QMessageBox>
+
+#include <page.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), parser(new Parser),
@@ -10,16 +13,14 @@ MainWindow::MainWindow(QWidget* parent)
   ui->viewer->setContextMenuPolicy(Qt::NoContextMenu);
 
   auto page = new Page(this);
-  ui->viewer->setPage(page);
-
-  connect(ui->editor, &QPlainTextEdit::textChanged, this,
-          &MainWindow::on_plainTextEdit_textChanged);
-
   auto channel = new QWebChannel(this);
   channel->registerObject(QStringLiteral("content"), &content);
+  ui->viewer->setPage(page);
   page->setWebChannel(channel);
 
   ui->viewer->setUrl(QUrl("qrc:/index.html"));
+  setWindowTitle("Qt Markdown");
+  setWindowIcon(QIcon(":app.ico"));
 }
 
 MainWindow::~MainWindow() {
@@ -28,19 +29,64 @@ MainWindow::~MainWindow() {
   delete translator;
 }
 
-void MainWindow::on_actionSave_triggered() {}
+auto MainWindow::is_modified() const -> bool {
+  return ui->editor->document()->isModified();
+}
 
-void MainWindow::on_actionClose_triggered() {}
+auto MainWindow::save(const QString& path) -> void {
+  // translator->save(path.toStdString());
+  auto file = QFile(path);
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    QMessageBox::warning(this, windowTitle(), "Couldn't write file.");
+    return;
+  }
+  auto os = QTextStream(&file);
+  os << ui->editor->toPlainText();
 
-void MainWindow::on_actionAbout_triggered() {}
+  ui->editor->document()->setModified(false);
+}
 
-void MainWindow::on_actionAbout_Qt_triggered() {}
+void MainWindow::on_actionSave_triggered() {
+  if (!is_modified()) {
+    return;
+  }
+  if (!last_path.isEmpty()) {
+    save(last_path);
+    return;
+  }
 
-void MainWindow::on_plainTextEdit_textChanged() {
+  auto path =
+      QFileDialog::getSaveFileName(this, "Save", "", "Markdown File(*.md)");
+  if (path.isEmpty()) {
+    return;
+  }
+  last_path = path;
+}
+
+void MainWindow::on_actionClose_triggered() {
+  if (is_modified()) {
+    auto ret =
+        QMessageBox::question(this, windowTitle(),
+                              "You have unsaved changes. "
+                              "Do you want to discard all changes and exit?");
+    if (ret != QMessageBox::Yes) {
+      return;
+    }
+  }
+  close();
+}
+
+void MainWindow::on_actionAbout_triggered() {
+  QMessageBox::about(this, "About qt-markdown",
+                     "A simple markdown editor made by Iori.");
+}
+
+void MainWindow::on_actionAbout_Qt_triggered() { QMessageBox::aboutQt(this); }
+
+void MainWindow::on_editor_textChanged() {
   auto text = ui->editor->toPlainText().toStdString();
   parser->set(text);
   auto out = translator->translate(parser->parse());
 
   content.setText(QString::fromStdString(out));
-  std::cout << out << std::endl;
 }

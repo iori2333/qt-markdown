@@ -3,6 +3,7 @@
     <qresource prefix="/">
         <file>index.html</file>
         <file>markdown.css</file>
+        <file>app.ico</file>
     </qresource>
     <qresource prefix="/qrc"/>
 </RCC>

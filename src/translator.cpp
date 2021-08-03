@@ -34,17 +34,6 @@ auto env_tags = std::unordered_map<ElemEnv, std::string_view>{
 auto pic_reg = std::regex(R"(!\[(.*?)\]\((.*?)\))");
 auto link_reg = std::regex(R"(\[(.*?)\]\((.*?)\))");
 
-static auto print_struct(const ElemLines& lines) -> void {
-  for (auto&& line : lines) {
-    for (auto&& elem : line) {
-      auto&& [content, env, type] = elem;
-      std::cout << "token: " << content << "\tenv: " << env
-                << "\ttype: " << type << std::endl;
-    }
-    std::cout << "-----------------------------------" << std::endl;
-  }
-}
-
 auto Translator::translate(const ElemLines& lines) -> std::string {
   //  print_struct(lines);
   auto length = lines.size();

@@ -25,12 +25,16 @@ private slots:
   void on_actionClose_triggered();
   void on_actionAbout_triggered();
   void on_actionAbout_Qt_triggered();
-  void on_plainTextEdit_textChanged();
+  void on_editor_textChanged();
 
 private:
   Ui::MainWindow* ui;
   IParser* parser;
   ITranslator* translator;
   Document content;
+  QString last_path;
+
+  auto is_modified() const -> bool;
+  auto save(const QString& path) -> void;
 };
 #endif // MAINWINDOW_H
