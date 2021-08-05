@@ -15,9 +15,11 @@ public:
 private:
   std::string last_result;
 
+  static inline auto get_indent(const ElemLine& line) -> int;
   auto translate_line(const std::vector<Element>& line,
                       bool ignore_first = false) const -> std::string;
   auto translate_element(const Element& element) const -> std::string;
+  auto handle_nested(int& i, const ElemLines& lines) -> std::string;
 };
 
 #endif // TRANSLATOR_H

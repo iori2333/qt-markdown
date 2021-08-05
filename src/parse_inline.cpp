@@ -13,6 +13,8 @@ auto inline_regs = std::vector<std::pair<std::regex, ElemType>>{
     {std::regex(R"((\[.*?\]\(.*?\)))"), ElemType::LINK},
     {std::regex(R"((#+ +))"), ElemType::NORMAL},
     {std::regex(R"((> +))"), ElemType::NORMAL},
+    {std::regex(R"(( *\d+\. +))"), ElemType::NORMAL},
+    {std::regex(R"(( *[+|-] +))"), ElemType::NORMAL},
 };
 
 auto Parser::inline_scan(const std::string& line, ElemEnv env) const
@@ -25,7 +27,7 @@ auto Parser::inline_scan(const std::string& line, ElemEnv env) const
     auto flag = false;
 
     for (auto&& [reg, type] : inline_regs) {
-      std::smatch match;
+      auto match = std::smatch{};
       if (std::regex_search(line.begin() + i, line.end(), match, reg,
                             std::regex_constants::match_continuous)) {
         flag = true;

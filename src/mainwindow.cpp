@@ -118,7 +118,9 @@ void MainWindow::on_actionAbout_triggered() {
 void MainWindow::on_actionAbout_Qt_triggered() { QMessageBox::aboutQt(this); }
 
 void MainWindow::on_editor_textChanged() {
-  parser->set(ui->editor->toPlainText().toStdString());
+  auto input = ui->editor->toPlainText().toStdString();
+  replace_string(input, "\t", "    ");
+  parser->set(input);
   auto out = translator->translate(parser->parse());
   content->setText(QString::fromStdString(out));
 }

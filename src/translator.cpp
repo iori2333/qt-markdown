@@ -22,8 +22,8 @@ auto inline_tags = std::unordered_map<ElemType, std::string_view>{
 auto env_tags = std::unordered_map<ElemEnv, std::string_view>{
     {ElemEnv::NORMAL, "<text>{}</text>"},
     {ElemEnv::CODE, "<code>{}</code>"},
-    {ElemEnv::OLIST, "<div class=\"list-item\">{}</div>"},
-    {ElemEnv::ULIST, "<div class=\"list-item\">{}</div>"},
+    {ElemEnv::OLIST, "<ol>{}</ol>"},
+    {ElemEnv::ULIST, "<ul>{}</ul>"},
     {ElemEnv::REFER, "<refer>{}</refer>"},
     {ElemEnv::REFER_CROSS, "<refer>{}</refer>"},
     {ElemEnv::TITLE, "<h{0}>{1}</h{0}>"},
@@ -88,7 +88,47 @@ auto Translator::translate_line(const ElemLine& line, bool ignore_first) const
   return ret;
 }
 
+inline auto Translator::get_indent(const ElemLine& line) -> int {
+  auto indent = line[0].content;
+  auto count = 0;
+  while (indent[count] == ' ') {
+    count++;
+  }
+  return count / 3;
+}
+
+auto Translator::handle_nested(int& i, const ElemLines& lines) -> std::string {
+  auto tmp = std::string{};
+  auto length = lines.size();
+  auto env = lines[i][0].env;
+  auto content = lines[i][0].content;
+  auto indent = get_indent(lines[i]);
+
+  while (i < length) {
+    if (lines[i][0].env != ElemEnv::ULIST &&
+        lines[i][0].env != ElemEnv::OLIST) {
+      break;
+    }
+    auto nindent = get_indent(lines[i]);
+    if (nindent > indent) {
+      tmp += handle_nested(i, lines) + "\n";
+      i--;
+    } else if (nindent < indent) {
+      return std::format(env_tags[env], tmp);
+    } else {
+      tmp += "<li>" + translate_line(lines[i], true) + "</li>\n";
+    }
+    i++;
+  }
+
+  if (tmp.empty()) {
+    return "";
+  }
+  return std::format(env_tags[env], tmp);
+}
+
 auto Translator::translate(const ElemLines& lines) -> std::string {
+
   auto length = lines.size();
   auto res = std::string{};
 
@@ -109,8 +149,6 @@ auto Translator::translate(const ElemLines& lines) -> std::string {
       break;
     }
     case ElemEnv::CODE:
-    case ElemEnv::OLIST:
-    case ElemEnv::ULIST:
     case ElemEnv::REFER_CROSS: {
       auto tmp = std::string{};
       while (i < length && lines[i][0].env == env) {
@@ -119,6 +157,11 @@ auto Translator::translate(const ElemLines& lines) -> std::string {
       }
       res += std::format(env_tags[env], tmp);
       i--;
+      break;
+    }
+    case ElemEnv::OLIST:
+    case ElemEnv::ULIST: {
+      res += handle_nested(i, lines);
       break;
     }
     default:

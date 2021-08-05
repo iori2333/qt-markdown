@@ -57,7 +57,7 @@ a:visited {
 }
 
 ul, ol {
-    padding: 0;
+    padding-left:14px;
     margin: 0;
 }
 
