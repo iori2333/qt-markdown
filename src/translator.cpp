@@ -107,13 +107,14 @@ auto Translator::handle_nested(int& i, const ElemLines& lines) -> std::string {
   while (i < length) {
     if (lines[i][0].env != ElemEnv::ULIST &&
         lines[i][0].env != ElemEnv::OLIST) {
+      i--;
       break;
     }
     auto nindent = get_indent(lines[i]);
     if (nindent > indent) {
       tmp += handle_nested(i, lines) + "\n";
-      i--;
     } else if (nindent < indent) {
+      i--;
       return std::format(env_tags[env], tmp);
     } else {
       tmp += "<li>" + translate_line(lines[i], true) + "</li>\n";
