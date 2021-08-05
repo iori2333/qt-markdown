@@ -8,13 +8,13 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), parser(new Parser),
-      translator(new Translator) {
+      translator(new Translator), content(new Document(this)) {
   ui->setupUi(this);
   ui->viewer->setContextMenuPolicy(Qt::NoContextMenu);
 
   auto page = new Page(this);
   auto channel = new QWebChannel(this);
-  channel->registerObject(QStringLiteral("content"), &content);
+  channel->registerObject(QStringLiteral("content"), content);
   ui->viewer->setPage(page);
   page->setWebChannel(channel);
 
@@ -29,11 +29,11 @@ MainWindow::~MainWindow() {
   delete translator;
 }
 
-auto MainWindow::is_modified() const -> bool {
+inline auto MainWindow::is_modified() const -> bool {
   return ui->editor->document()->isModified();
 }
 
-auto MainWindow::save(const QString& path) -> void {
+inline auto MainWindow::save(const QString& path) -> void {
   auto file = QFile(path);
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
     QMessageBox::warning(this, windowTitle(), "Couldn't write file.");
@@ -43,49 +43,6 @@ auto MainWindow::save(const QString& path) -> void {
   os << ui->editor->toPlainText();
 
   ui->editor->document()->setModified(false);
-}
-
-auto MainWindow::on_actionSave_triggered() -> void {
-  if (!is_modified()) {
-    return;
-  }
-  if (!last_path.isEmpty()) {
-    save(last_path);
-    return;
-  }
-
-  auto path =
-      QFileDialog::getSaveFileName(this, "Save", "", "Markdown File(*.md)");
-  if (path.isEmpty()) {
-    return;
-  }
-  last_path = path;
-}
-
-void MainWindow::on_actionClose_triggered() {
-  if (is_modified()) {
-    auto ret =
-        QMessageBox::question(this, windowTitle(),
-                              "You have unsaved changes.\n"
-                              "Do you want to discard all changes and exit?");
-    if (ret != QMessageBox::Yes) {
-      return;
-    }
-  }
-  close();
-}
-
-void MainWindow::on_actionAbout_triggered() {
-  QMessageBox::about(this, "About Ipora",
-                     "A simple markdown editor made by Iori.");
-}
-
-void MainWindow::on_actionAbout_Qt_triggered() { QMessageBox::aboutQt(this); }
-
-void MainWindow::on_editor_textChanged() {
-  parser->set(ui->editor->toPlainText().toStdString());
-  auto out = translator->translate(parser->parse());
-  content.setText(QString::fromStdString(out));
 }
 
 void MainWindow::on_actionOpen_triggered() {
@@ -112,6 +69,24 @@ void MainWindow::on_actionOpen_triggered() {
   ui->editor->setPlainText(file.readAll());
 }
 
+auto MainWindow::on_actionSave_triggered() -> void {
+  if (!is_modified()) {
+    return;
+  }
+  if (!last_path.isEmpty()) {
+    save(last_path);
+    return;
+  }
+
+  auto path =
+      QFileDialog::getSaveFileName(this, "Save", "", "Markdown File(*.md)");
+  if (path.isEmpty()) {
+    return;
+  }
+  last_path = path;
+  save(path);
+}
+
 void MainWindow::on_actionSave_as_triggered() {
   auto path =
       QFileDialog::getSaveFileName(this, "Save As", "", "Markdown File(*.md)");
@@ -120,4 +95,30 @@ void MainWindow::on_actionSave_as_triggered() {
   }
   last_path = path;
   save(path);
+}
+
+void MainWindow::on_actionClose_triggered() {
+  if (is_modified()) {
+    auto ret =
+        QMessageBox::question(this, windowTitle(),
+                              "You have unsaved changes.\n"
+                              "Do you want to discard all changes and exit?");
+    if (ret != QMessageBox::Yes) {
+      return;
+    }
+  }
+  close();
+}
+
+void MainWindow::on_actionAbout_triggered() {
+  QMessageBox::about(this, "About Ipora",
+                     "A simple markdown editor made by Iori.");
+}
+
+void MainWindow::on_actionAbout_Qt_triggered() { QMessageBox::aboutQt(this); }
+
+void MainWindow::on_editor_textChanged() {
+  parser->set(ui->editor->toPlainText().toStdString());
+  auto out = translator->translate(parser->parse());
+  content->setText(QString::fromStdString(out));
 }

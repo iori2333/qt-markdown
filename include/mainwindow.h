@@ -21,22 +21,22 @@ public:
   ~MainWindow();
 
 private slots:
+  void on_actionOpen_triggered();
   void on_actionSave_triggered();
+  void on_actionSave_as_triggered();
   void on_actionClose_triggered();
   void on_actionAbout_triggered();
   void on_actionAbout_Qt_triggered();
   void on_editor_textChanged();
-  void on_actionOpen_triggered();
-  void on_actionSave_as_triggered();
 
 private:
   Ui::MainWindow* ui;
   IParser* parser;
   ITranslator* translator;
-  Document content;
+  Document* content;
   QString last_path;
 
-  auto is_modified() const -> bool;
-  auto save(const QString& path) -> void;
+  inline auto is_modified() const -> bool;
+  inline auto save(const QString& path) -> void;
 };
 #endif // MAINWINDOW_H
