@@ -13,6 +13,7 @@ enum class ElemType {
   MATH,         // multi-line LaTeX
   BOLD,         // bold texts
   ITALIC,       // italic texts
+  BOLD_ITALIC,  // bold + italic texts
 };
 
 enum class ElemEnv {

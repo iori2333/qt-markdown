@@ -10,11 +10,12 @@
 using EscapePair = std::pair<std::string_view, std::string_view>;
 
 auto inline_tags = std::unordered_map<ElemType, std::string_view>{
-    {ElemType::BOLD, "<span class=\"bold-text\">{}</span>"},
-    {ElemType::ITALIC, "<span class=\"italic-text\">{}</span>"},
+    {ElemType::BOLD, "<text class=\"bold\">{}</text>"},
+    {ElemType::ITALIC, "<text class=\"italic\">{}</text>"},
+    {ElemType::BOLD_ITALIC, "<text class=\"bold italic\">{}</text>"},
     {ElemType::REFER_INLINE, "<code>{}</code>"},
-    {ElemType::MATH_INLINE, "<span class=\"italic-text\">{}</span>"},
-    {ElemType::MATH, "<span class=\"italic-text\">{}</span>"},
+    {ElemType::MATH_INLINE, "<math>{}</math>"},
+    {ElemType::MATH, "<math>{}</math>"},
     {ElemType::LINK, "<a href=\"{}\">{}</a>"},
     {ElemType::PICTURE, "<img src=\"{}\", alt=\"{}\">"},
 };

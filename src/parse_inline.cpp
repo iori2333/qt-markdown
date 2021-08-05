@@ -4,6 +4,7 @@
 #include <parser.h>
 
 auto inline_regs = std::vector<std::pair<std::regex, ElemType>>{
+    {std::regex(R"(\*\*\*(.*?)\*\*\*)"), ElemType::BOLD_ITALIC},
     {std::regex(R"(\*\*(.*?)\*\*)"), ElemType::BOLD},
     {std::regex(R"(\*([^.*]{1,}?)\*)"), ElemType::ITALIC},
     {std::regex(R"(`(.*?)`)"), ElemType::REFER_INLINE},
