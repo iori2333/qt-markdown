@@ -26,6 +26,8 @@ private slots:
   void on_actionAbout_triggered();
   void on_actionAbout_Qt_triggered();
   void on_editor_textChanged();
+  void on_actionOpen_triggered();
+  void on_actionSave_as_triggered();
 
 private:
   Ui::MainWindow* ui;

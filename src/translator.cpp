@@ -12,7 +12,7 @@ using EscapePair = std::pair<std::string_view, std::string_view>;
 auto inline_tags = std::unordered_map<ElemType, std::string_view>{
     {ElemType::BOLD, "<span class=\"bold-text\">{}</span>"},
     {ElemType::ITALIC, "<span class=\"italic-text\">{}</span>"},
-    {ElemType::REFER_INLINE, "<span class=\"refer-text\">{}</span>"},
+    {ElemType::REFER_INLINE, "<code>{}</code>"},
     {ElemType::MATH_INLINE, "<span class=\"italic-text\">{}</span>"},
     {ElemType::MATH, "<span class=\"italic-text\">{}</span>"},
     {ElemType::LINK, "<a href=\"{}\">{}</a>"},
@@ -20,12 +20,12 @@ auto inline_tags = std::unordered_map<ElemType, std::string_view>{
 };
 
 auto env_tags = std::unordered_map<ElemEnv, std::string_view>{
-    {ElemEnv::NORMAL, "<div class=\"normal-text\">{}</div>"},
-    {ElemEnv::CODE, "<div class=\"code-block\">{}</div>"},
+    {ElemEnv::NORMAL, "<text>{}</text>"},
+    {ElemEnv::CODE, "<code>{}</code>"},
     {ElemEnv::OLIST, "<div class=\"list-item\">{}</div>"},
     {ElemEnv::ULIST, "<div class=\"list-item\">{}</div>"},
-    {ElemEnv::REFER, "<div class=\"refer-block\">{}</div>"},
-    {ElemEnv::REFER_CROSS, "<div class=\"refer-block\">{}</div>"},
+    {ElemEnv::REFER, "<refer>{}</refer>"},
+    {ElemEnv::REFER_CROSS, "<refer>{}</refer>"},
     {ElemEnv::TITLE, "<h{0}>{1}</h{0}>"},
 };
 
@@ -122,9 +122,12 @@ auto Translator::translate(const ElemLines& lines) -> std::string {
       break;
     }
     default:
-      res += std::format(env_tags[env], translate_line(lines[i])) + "<br/>\n";
+      res += std::format(env_tags[env], translate_line(lines[i]));
     }
+
+    res += "<br/>\n";
   }
+
   last_result = res;
   return res;
 }

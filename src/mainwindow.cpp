@@ -66,7 +66,7 @@ void MainWindow::on_actionClose_triggered() {
   if (is_modified()) {
     auto ret =
         QMessageBox::question(this, windowTitle(),
-                              "You have unsaved changes. "
+                              "You have unsaved changes.\n"
                               "Do you want to discard all changes and exit?");
     if (ret != QMessageBox::Yes) {
       return;
@@ -86,4 +86,38 @@ void MainWindow::on_editor_textChanged() {
   parser->set(ui->editor->toPlainText().toStdString());
   auto out = translator->translate(parser->parse());
   content.setText(QString::fromStdString(out));
+}
+
+void MainWindow::on_actionOpen_triggered() {
+  if (is_modified()) {
+    auto ret = QMessageBox::question(
+        this, windowTitle(),
+        "You have unsaved changes.\n"
+        "Do you want to discard all changes and open new document?");
+    if (ret != QMessageBox::Yes) {
+      return;
+    }
+  }
+
+  auto path =
+      QFileDialog::getOpenFileName(this, "Open", "", "Markdown File(*.md)");
+  auto file = QFile(path);
+
+  if (!file.open(QIODevice::ReadOnly)) {
+    QMessageBox::warning(this, windowTitle(), "could not open file");
+    return;
+  }
+
+  last_path = path;
+  ui->editor->setPlainText(file.readAll());
+}
+
+void MainWindow::on_actionSave_as_triggered() {
+  auto path =
+      QFileDialog::getSaveFileName(this, "Save As", "", "Markdown File(*.md)");
+  if (path.isEmpty()) {
+    return;
+  }
+  last_path = path;
+  save(path);
 }
