@@ -31,22 +31,3 @@ auto replace_string(std::string& s, std::string_view from, std::string_view to)
     pos += to.size();
   }
 }
-
-static const char* elem_types[] = {
-    "NORMAL",      "PICTURES", "LINK", "REFER_INLINE",
-    "MATH_INLINE", "MATH",     "BOLD", "ITALIC",
-};
-
-static const char* elem_envs[] = {
-    "NORMAL", "REFER", "REFER_CROSS", "CODE", "TITLE", "OLIST", "ULIST",
-};
-
-auto operator<<(std::ostream& os, const ElemType type) -> std::ostream& {
-  os << elem_types[static_cast<int>(type)];
-  return os;
-}
-
-auto operator<<(std::ostream& os, const ElemEnv env) -> std::ostream& {
-  os << elem_envs[static_cast<int>(env)];
-  return os;
-}

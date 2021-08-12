@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.11)
 
-project(qt-markdown VERSION 0.1 LANGUAGES CXX)
+project(Ipora VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -48,7 +48,6 @@ else()
 endif()
 
 target_include_directories(qt-markdown PUBLIC include/)
-target_include_directories(qt-markdown PUBLIC forms/)
 
 target_link_libraries(qt-markdown PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(qt-markdown PRIVATE Qt${QT_VERSION_MAJOR}::WebEngineWidgets)
