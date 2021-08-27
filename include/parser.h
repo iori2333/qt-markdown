@@ -13,7 +13,6 @@ public:
   auto parse() const -> std::vector<std::vector<Element>> override;
 
 private:
-  std::string text;
   std::vector<std::string> lines;
 
   auto line_scan(const std::string& line) const -> ElemEnv;

@@ -1,7 +1,6 @@
 #include <parser.h>
 
 auto Parser::set(std::string_view text) -> void {
-  this->text = text;
   this->lines = split(text, "\n");
 }
 

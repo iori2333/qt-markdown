@@ -1,24 +1,28 @@
 #include <QWebChannel>
 #include <QFileDialog>
 #include <QMessageBox>
-
 #include <mainwindow.h>
 #include "../forms/ui_mainwindow.h"
 #include <page.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), parser(new Parser),
-      translator(new Translator), content(new Document(this)) {
+      translator(new Translator), content(new Document(this)),
+      status(new QLabel(this)), wc(new QLabel(this)) {
   ui->setupUi(this);
   ui->viewer->setContextMenuPolicy(Qt::NoContextMenu);
-
+  status->setText("Ready");
+  wc->setText("Words: 0");
   auto page = new Page(this);
   auto channel = new QWebChannel(this);
   channel->registerObject(QStringLiteral("content"), content);
   ui->viewer->setPage(page);
   page->setWebChannel(channel);
-
   ui->viewer->setUrl(QUrl("qrc:/index.html"));
+  ui->statusbar->addWidget(status);
+  ui->statusbar->addWidget(wc);
+  status->setMargin(10);
+  wc->setMargin(10);
   setWindowTitle("Ipora");
   setWindowIcon(QIcon(":app.ico"));
 }
@@ -41,7 +45,7 @@ inline auto MainWindow::save(const QString& path) -> void {
   }
   auto os = QTextStream(&file);
   os << ui->editor->toPlainText();
-
+  status->setText("Saved");
   ui->editor->document()->setModified(false);
 }
 
@@ -120,7 +124,10 @@ void MainWindow::on_actionAbout_Qt_triggered() { QMessageBox::aboutQt(this); }
 void MainWindow::on_editor_textChanged() {
   auto input = ui->editor->toPlainText().toStdString();
   replace_string(input, "\t", "    ");
+  status->setText("Busy");
   parser->set(input);
   auto out = translator->translate(parser->parse());
   content->setText(QString::fromStdString(out));
+  status->setText("Ready");
+  wc->setText(QString("Words: %1").arg(input.size()));
 }

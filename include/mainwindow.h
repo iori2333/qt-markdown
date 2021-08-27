@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QLabel>
 #include <parser.h>
 #include <translator.h>
 #include <document.h>
@@ -34,6 +34,8 @@ private:
   IParser* parser;
   ITranslator* translator;
   Document* content;
+  QLabel* status;
+  QLabel* wc;
   QString last_path;
 
   inline auto is_modified() const -> bool;
