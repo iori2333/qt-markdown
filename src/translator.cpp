@@ -13,7 +13,7 @@ auto inline_tags = std::unordered_map<ElemType, std::string_view>{
     {ElemType::BOLD, "<text class=\"bold\">{}</text>"},
     {ElemType::ITALIC, "<text class=\"italic\">{}</text>"},
     {ElemType::BOLD_ITALIC, "<text class=\"bold italic\">{}</text>"},
-    {ElemType::REFER_INLINE, "<code>{}</code>"},
+    {ElemType::REFER_INLINE, "<code class=\"inline\">{}</code>"},
     {ElemType::MATH_INLINE, "<math>{}</math>"},
     {ElemType::MATH, "<math>{}</math>"},
     {ElemType::LINK, "<a href=\"{}\">{}</a>"},
@@ -22,7 +22,7 @@ auto inline_tags = std::unordered_map<ElemType, std::string_view>{
 
 auto env_tags = std::unordered_map<ElemEnv, std::string_view>{
     {ElemEnv::NORMAL, "<text>{}</text>"},
-    {ElemEnv::CODE, "<code>{}</code>"},
+    {ElemEnv::CODE, "<code class=\"cross\">{}</code>"},
     {ElemEnv::OLIST, "<ol>{}</ol>"},
     {ElemEnv::ULIST, "<ul>{}</ul>"},
     {ElemEnv::REFER, "<refer>{}</refer>"},
